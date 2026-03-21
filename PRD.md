@@ -38,3 +38,26 @@ The frontend must provide the user with specific rendering configurations to han
 - A clean, grid-based dashboard UI.
 - A drag-and-drop zone for uploading new artwork to specific playlists.
 - A visual cropping modal utilizing a Javascript cropping library (e.g., Cropper.js) to allow the user to define the exact static crop box for an image. This data must be saved back to the SQLite database via the API.
+
+### Phase 3: The Curation Engine & AI Pipeline
+**Objective:** Implement an autonomous, multi-agent pipeline to analyze artwork, generate metadata, and present it via a "Museum Placard" UI, gated by a Human-in-the-Loop (HITL) review system.
+
+**1. Data Layer Expansion:**
+- Update the `Artwork` table in `models.py` to include: `title`, `artist`, `year`, `description`, `tags` (JSON string), and `status` (default to 'pending_review', then 'approved').
+
+**2. The Agentic Pipeline (Backend):**
+- Create a new module `agents.py`.
+- **Vision Agent:** Uses a local vision model (e.g., Ollama/LLaVA) or a lightweight API to generate visual and structural tags from the image array.
+- **OSINT Researcher Agent:** Takes the image/visual data and queries open sources to identify the piece, artist, and year.
+- **Scribe Agent:** Synthesizes the data into a concise, 2-sentence historical or artistic description.
+- **Orchestrator:** A FastAPI background task triggered on upload that routes the image through these three agents and saves the output to the database.
+
+**3. Human-in-the-Loop (Admin UI):**
+- Update `admin.html` with a "Review Queue" tab.
+- Display images with `status='pending_review'` alongside their AI-generated metadata.
+- Provide inputs for the user to edit the data and an "Approve" button to change the status to 'approved', pushing it to the live playlists.
+
+**4. The Museum Placard (Display Client):**
+- Update `index.html` and `app.js` to read the new metadata.
+- When the control overlay is active, display a dark glass-morphism panel on the left containing the Title, Artist, Description, and Tags.
+- Generate a dynamic QR code in the UI (using a JS library like `qrcode.js`) that links to a Google search for the Artist + Title.
