@@ -61,3 +61,24 @@ The frontend must provide the user with specific rendering configurations to han
 - Update `index.html` and `app.js` to read the new metadata.
 - When the control overlay is active, display a dark glass-morphism panel on the left containing the Title, Artist, Description, and Tags.
 - Generate a dynamic QR code in the UI (using a JS library like `qrcode.js`) that links to a Google search for the Artist + Title.
+
+### Phase 4: Control, Scale, & Polish
+**Objective:** Transition the application into a production-ready, multi-display platform with advanced remote management, persistent state, and refined AI curation.
+
+**1. Remote Management & WebSocket Routing:**
+- **WebSocket Remote Control:** Implementation of a mobile-first PWA remote (`/remote`) that provides instant, no-refresh DOM manipulation across connected displays.
+- **Targeted Display Routing:** Introduction of display IDs via URL parameters (`?display=ID`), allowing a single server instance to manage multiple independent TVs with unique playlists and settings.
+
+**2. Configuration & State Persistence:**
+- **Hierarchical Configuration:** A robust override system where URL parameters supersede Playlist-level defaults, which in turn supersede Global system defaults. All time-based settings (cycle times, placard timers) are handled in seconds for user clarity.
+- **State Persistence & Migrations:** Implementation of safe SQLite schema updates. On startup, the system automatically detects and adds missing columns to existing databases.
+- **Docker Persistence:** Official `docker-compose` support with named volume mapping for both the `artwork.db` and the library media directory to prevent data loss during updates.
+
+**3. Enhanced AI Curation:**
+- **Context-Aware Analysis:** The AI Curator Agent now uses original filenames (cleaned of underscores/dashes) as contextual hints for identification.
+- **Human-in-the-Loop (HITL) Regeneration:** Support for user-provided "AI Guidance" hints in the Review Queue, allowing users to correct AI hallucinations and regenerate placard data on-the-fly.
+
+**4. Visual Refinement & Branding:**
+- **Official Branding:** Rebranding of the platform as **Screen Docent**, including an integrated SVG logo and a cohesive "glass-morphism" aesthetic across all interfaces.
+- **Responsive TV UI:** Optimized rendering for high-resolution displays, using `vmin` typography and strict viewport constraints to ensure a premium "Museum" look on various hardware (Fire TV, Android TV, etc.).
+- **Unobtrusive Logo Integration:** Subtle logo placement on placards and hover controls to maintain the focus on the artwork.
