@@ -81,4 +81,19 @@ The frontend must provide the user with specific rendering configurations to han
 **4. Visual Refinement & Branding:**
 - **Official Branding:** Rebranding of the platform as **Screen Docent**, including an integrated SVG logo and a cohesive "glass-morphism" aesthetic across all interfaces.
 - **Responsive TV UI:** Optimized rendering for high-resolution displays, using `vmin` typography and strict viewport constraints to ensure a premium "Museum" look on various hardware (Fire TV, Android TV, etc.).
-- **Unobtrusive Logo Integration:** Subtle logo placement on placards and hover controls to maintain the focus on the artwork.
+- Unobtrusive Logo Integration: Subtle logo placement on placards and hover controls to maintain the focus on the artwork.
+
+### Phase 5: Semantic Discovery & RAG
+**Objective:** Enhance the curation engine with factual external data and implement an automated discovery system for expanding the local library with world-class public domain art.
+
+**1. Autonomous RAG Curator:**
+- **Retroactive Enrichment:** A new pipeline that cross-references existing artwork titles and artists with the Wikipedia API.
+- **Fact-Checked Metadata:** Uses verified Wikipedia summaries as "ground truth" context for the Gemini model to rewrite placard descriptions, eliminating AI hallucinations and ensuring historical accuracy.
+- **Batch Processing:** Support for library-wide enrichment with integrated rate-limiting.
+
+**2. Modular Semantic Art Scout:**
+- **Scout Aggregator:** A pluggable architecture for hitting various museum and archive APIs.
+- **ChicagoArtScout:** The first implementation, integrated with the Art Institute of Chicago's API.
+- **High-Res Filters:** Automated filtering for high-resolution images (min 2000px) and explicit public-domain (CC0) licensing.
+- **Discovery Queue:** A new "inbox" for approved scouted art, allowing users to preview thumbnails before downloading full-res files to their local library.
+
